@@ -1,69 +1,54 @@
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/47295014/202592575-459ca943-f9e2-4197-a949-78f0a9976b2f.png" />
-</p>
+# Vite Github Pages boilerplate
 
-## Introduction
+Boilerplate for building Github Pages instantly. It incorporates the following frameworks
 
-This repository provides templates for monolithic frontend and backend development. Leverage "npm workspaces" to facilitate management of each package. It also uses open APIs to streamline communication between frontend and backend.
+- Vite
+- React
+- mui-material
 
-## Structure
+# Quick start
 
-- Frontend
-  - Vite, React, Mui-material, i18n, Open API
-- Backend
-  - Express, mysql, Open API
+## Copy this repository
 
-## Getting Start
+Just press `use this template` to copy it!
 
-Copy this repository locally. You can start developing immediately.
-Press `use this template` to start development.
+## Perform initial setup
 
-### Install dependent packages
-
-Install dependent packages based on package.json in each directory.
+Make sure your project is up and running without problems!
 
 ```sh
 npm install
+npm run start
 ```
 
-### Start development server
+Update `vite.config.ts` according to the information in your repository
 
-Start both the frontend and backend development servers. If you have not built Mysql locally, please use the provided docker-compose.
+```typescript
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+import tsconfigPaths from 'vite-tsconfig-paths';
+import Sitemap from 'vite-plugin-sitemap';
+import { paths } from './src/navigation/Paths';
+import { VitePWA } from 'vite-plugin-pwa';
 
-**When you want to start MYSQL**
-```sh
-make up
+export default defineConfig({
+  plugins: [
+    react(),
+    tsconfigPaths(),
+    VitePWA({
+      /* site info */
+    }),
+    Sitemap({
+      dynamicRoutes: Object.keys(paths).map((e) => paths[e]),
+      hostname: 'http://localhost', // <-- github pages url
+      robots: [{ userAgent: '*', allow: '/' }],
+    }),
+  ],
+  base: '/vite-github-pages-boilerplate', // <-- github pages base paths
+});
 ```
 
-**When starting the development server**
-```sh
-npm start
-```
+## Deploy
 
-### Build and deploy
-
-Use the following command to build
-
-```
-npm run build
-```
-
-### Alternative) Build only the container
-
-I think that there are times when you want to build only containers and use them on each PaaS platform. This repository comes pre-built with `GitHub Actions`. Automatically create a container when you change the source code in the `main` branch.
-
-### others
-
-If you want to incorporate Blockchain into your development, please refer to the following information. You can easily develop blockchain applications via Javascript sdk and API without learning how to develop difficult contracts.
-
-**Site**
-
-https://symbol-community.com/ja-JP
-
-**Learning**
-
-https://github.com/xembook/quick_learning_symbol
-
-**Contact**
-
-https://discord.gg/A8MRq5Vuvt
+Build GitHub Pages.
+Since GitHub Actions have already been built, simply push them to the repository to start deployment
